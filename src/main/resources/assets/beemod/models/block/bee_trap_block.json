@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "beemod:block/bee_trap_block"
+  }
+}

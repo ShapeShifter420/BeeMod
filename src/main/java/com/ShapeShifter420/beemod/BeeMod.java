@@ -1,9 +1,10 @@
 package com.ShapeShifter420.beemod;
 
+import com.ShapeShifter420.beemod.items.BeeGranateItem;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.food.FoodProperties;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -40,36 +41,28 @@ public class BeeMod {
     public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
     // Creates a new Block with the id "examplemod:example_block", combining the namespace and path
-    public static final RegistryObject<Block> EXAMPLE_BLOCK = BLOCKS.register("example_block",
-        () -> new Block(BlockBehaviour.Properties.of()
-            .setId(BLOCKS.key("example_block"))
-            .mapColor(MapColor.STONE)
-        )
+    public static final RegistryObject<Block> BEE_TRAP_BLOCK = BLOCKS.register("bee_trap_block",
+            () -> new Block(BlockBehaviour.Properties.of()
+                    .setId(BLOCKS.key("bee_trap_block"))
+                    .mapColor(MapColor.STONE)
+            )
     );
     // Creates a new BlockItem with the id "examplemod:example_block", combining the namespace and path
-    public static final RegistryObject<Item> EXAMPLE_BLOCK_ITEM = ITEMS.register("example_block",
-        () -> new BlockItem(EXAMPLE_BLOCK.get(), new Item.Properties().setId(ITEMS.key("example_block")))
+    public static final RegistryObject<Item> BEE_TRAP_BLOCK_ITEM = ITEMS.register("bee_trap_block",
+            () -> new BlockItem(BEE_TRAP_BLOCK.get(), new Item.Properties().setId(ITEMS.key("bee_trap_block")))
     );
 
-    // Creates a new food item with the id "examplemod:example_id", nutrition 1 and saturation 2
-    public static final RegistryObject<Item> EXAMPLE_ITEM = ITEMS.register("example_item",
-        () -> new Item(new Item.Properties()
-            .setId(ITEMS.key("example_item"))
-            .food(new FoodProperties.Builder()
-                .alwaysEdible()
-                .nutrition(1)
-                .saturationModifier(2f)
-                .build()
-            )
-        )
-    );
+    public static final RegistryObject<Item> BEE_GRANATE_ITEM = ITEMS.register("bee_granate_item",
+            () -> new BeeGranateItem(new Item.Properties().setId(ITEMS.key("bee_granate_item")))
+            );
 
     // Creates a creative tab with the id "examplemod:example_tab" for the example item, that is placed after the combat tab
     public static final RegistryObject<CreativeModeTab> EXAMPLE_TAB = CREATIVE_MODE_TABS.register("example_tab", () -> CreativeModeTab.builder()
             .withTabsBefore(CreativeModeTabs.COMBAT)
-            .icon(() -> EXAMPLE_ITEM.get().getDefaultInstance())
+            .icon(() -> BEE_GRANATE_ITEM.get().getDefaultInstance())
             .displayItems((parameters, output) -> {
-                output.accept(EXAMPLE_ITEM.get()); // Add the example item to the tab. For your own tabs, this method is preferred over the event
+                output.accept(BEE_GRANATE_ITEM.get());
+                output.accept(BEE_TRAP_BLOCK_ITEM.get());// Add the example item to the tab. For your own tabs, this method is preferred over the event
             }).build());
 
     public BeeMod(FMLJavaModLoadingContext context) {
@@ -110,7 +103,7 @@ public class BeeMod {
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
         if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS)
-            event.accept(EXAMPLE_BLOCK_ITEM);
+            event.accept(BEE_TRAP_BLOCK_ITEM);
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -130,4 +123,5 @@ public class BeeMod {
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
     }
+
 }
